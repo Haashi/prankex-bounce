@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing DVD Logo</title>
+    <style>
+        /* Reset and set up a dark cinema-like canvas */
+        body {
+            margin: 0;
+            background-color: #000000;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Style the logo wrapper */
+        #prankex {
+            position: absolute;
+            width: 180px;
+            height: auto;
+            filter: hue-rotate(0deg);
+            transition: color 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Simply point the src to your GIF file -->
+    <img id="prankex" alt="Bouncing GIF" src="prankex.gif">
+
+    <script>
+        const logo = document.getElementById('prankex');
+
+        // Physics variables
+        let speedX = 3;
+        let speedY = 3;
+        
+        // Dynamic boundary tracking
+        let logoWidth = logo.clientWidth;
+        let logoHeight = logo.clientHeight;
+        
+        // Spawn the logo at a random starting spot safely inside the screen
+        let x = Math.random() * (window.innerWidth - logoWidth);
+        let y = Math.random() * (window.innerHeight - logoHeight);
+
+        // A vivid palette of classic retro colors
+        const colors = [
+            '#ff0055', '#00ffcc', '#ffcc00', '#ff00ff', 
+            '#00ff00', '#0066ff', '#ffffff', '#ff5500'
+        ];
+
+        let currentHue = 0;
+
+        function modulateImage() {
+            // Shift the color wheel by a random step between 60 and 300 degrees
+            const shift = 60 + Math.random() * 240;
+            currentHue = (currentHue + shift) % 360;
+            
+            // Apply the CSS color modulation filter directly to the image element
+            logo.style.filter = `hue-rotate(${currentHue}deg) brightness(1.2)`;
+        }
+
+        function updateAnimation() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            // Advance the coordinates
+            x += speedX;
+            y += speedY;
+
+            // Left/Right collision check
+            if (x + logoWidth >= screenWidth || x <= 0) {
+                speedX = -speedX;
+                // Snap to boundary edge to avoid getting trapped out-of-bounds
+                x = x <= 0 ? 0 : screenWidth - logoWidth;
+                modulateImage();
+            }
+
+            // Top/Bottom collision check
+            if (y + logoHeight >= screenHeight || y <= 0) {
+                speedY = -speedY;
+                y = y <= 0 ? 0 : screenHeight - logoHeight;
+                modulateImage();
+            }
+
+            // Render positions
+            logo.style.left = x + 'px';
+            logo.style.top = y + 'px';
+
+            // High-performance browser repaint loop
+            requestAnimationFrame(updateAnimation);
+        }
+
+        // Recalculate dimensions if the user resizes their browser window
+        window.addEventListener('resize', () => {
+            logoWidth = logo.clientWidth;
+            logoHeight = logo.clientHeight;
+            // Prevent logo from disappearing off-screen if window shrinks drastically
+            x = Math.min(x, window.innerWidth - logoWidth);
+            y = Math.min(y, window.innerHeight - logoHeight);
+        });
+
+        // Fire it up!
+        updateAnimation();
+    </script>
+</body>
+</html>
