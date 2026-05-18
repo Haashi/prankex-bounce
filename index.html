@@ -61,14 +61,15 @@
             // Apply the CSS color modulation filter directly to the image element
             logo.style.filter = `hue-rotate(${currentHue}deg) brightness(1.2)`;
         }
-
+        let lastUpdate = performance.now();
         function updateAnimation() {
             const screenWidth = window.innerWidth;
             const screenHeight = window.innerHeight;
-
+            let delta = performance.now()-lastUpdate;
+            lastUpdate = performance.now();
             // Advance the coordinates
-            x += speedX;
-            y += speedY;
+            x += speedX*delta/10;
+            y += speedY*delta/10;
 
             // Left/Right collision check
             if (x + logoWidth >= screenWidth || x <= 0) {
