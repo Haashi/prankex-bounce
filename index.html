@@ -39,9 +39,8 @@
         let speedY = -3;
         
         // Dynamic boundary tracking
-        let logoWidth = logo.clientWidth;
-        let logoHeight = logo.clientHeight;
-        
+        let logoWidth = 180;
+        let logoHeight = 180;
         // Spawn the logo at a random starting spot safely inside the screen
         let x = Math.random() * (window.innerWidth - logoWidth);
         let y = Math.random() * (window.innerHeight - logoHeight);
@@ -102,10 +101,10 @@
             // Prevent logo from disappearing off-screen if window shrinks drastically
             x = Math.min(x, window.innerWidth - logoWidth);
             y = Math.min(y, window.innerHeight - logoHeight);
+            console.log(logoWidth,logoHeight);
         }
         // Fire it up!
         updateAnimation();
-        const myTimeout = setTimeout(resize, 1000);
     </script>
 </body>
 </html>
