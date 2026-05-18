@@ -36,7 +36,7 @@
 
         // Physics variables
         let speedX = 3;
-        let speedY = 3;
+        let speedY = -3;
         
         // Dynamic boundary tracking
         let logoWidth = logo.clientWidth;
@@ -95,16 +95,17 @@
         }
 
         // Recalculate dimensions if the user resizes their browser window
-        window.addEventListener('resize', () => {
+        window.addEventListener('resize', resize);
+        function resize() {
             logoWidth = logo.clientWidth;
             logoHeight = logo.clientHeight;
             // Prevent logo from disappearing off-screen if window shrinks drastically
             x = Math.min(x, window.innerWidth - logoWidth);
             y = Math.min(y, window.innerHeight - logoHeight);
-        });
-
+        }
         // Fire it up!
         updateAnimation();
+        const myTimeout = setTimeout(resize, 1000);
     </script>
 </body>
 </html>
